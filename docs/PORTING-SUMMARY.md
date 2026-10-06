@@ -9,8 +9,8 @@ how Kiro compares to other agent harnesses for this workload.
 pstack is a structured agent operating system. `/poteto-mode` is the router: it
 reads a task, matches a playbook, applies principles, delegates through
 subagents, and produces verified work. The router is worthless without the
-skills it routes to. The port therefore ships the complete set: 54 skills, 23
-playbooks, 19 principles, and the `poteto-agent` subagent role.
+skills it routes to. The port therefore ships the complete set: 51 skills, 23
+playbooks, 24 principles, and the `poteto-agent` subagent role.
 
 ## Why a port was needed
 
@@ -51,7 +51,7 @@ These do not exist in upstream pstack. They are the port's compatibility layer.
   harness with 26 assertions against the real files. It exits non-zero on any
   Cursor residue in the core loop.
 - `install.sh`. An idempotent installer for global or workspace scope.
-- `README.md`. Install and usage for all 54 skills.
+- `README.md`. Install and usage for all 51 skills.
 
 ## How the port was verified
 
@@ -83,7 +83,7 @@ Verification ran against real artifacts, not self-report.
 
 pstack skills work as slash commands in `kiro-cli chat`. This is the primary
 interaction surface. No special agent switch is needed. After installing with
-`./install.sh global`, every new chat session sees all 54 skills because the
+`./install.sh global`, every new chat session sees all 51 skills because the
 built-in default agent (`kiro_default`) loads
 `skill://~/.kiro/skills/*/SKILL.md` as a default resource, and custom agents
 inherit those resources unless `disableInheritingDefaultResources` is set. The
@@ -154,7 +154,7 @@ not run here, so treat them as unverified.
   cleanly onto pstack's research-implement-review playbooks. Five stages ran in
   parallel during QA. (measured)
 - **Native progressive skill loading.** Skill metadata loads at startup, full
-  content on demand, so the router holds 54 skills without flooding context.
+  content on demand, so the router holds 51 skills without flooding context.
   (measured against the install)
 - **Lifecycle hooks.** `agentSpawn`, `preToolUse`, `postToolUse`, and `stop`
   hooks can automate verification and decision-trail steps. (measured capability,
@@ -206,10 +206,10 @@ Pstack-kiro-harness/
 │   └── PORTING-SUMMARY.md         # this file
 └── .kiro/
     ├── agents/poteto-agent.json
-    └── skills/                     # 54 skills
+    └── skills/                     # 51 skills
         ├── poteto-mode/            # router, 23 playbooks, references, scripts
         ├── setup-pstack/
         ├── how/  why/  architect/  arena/  swarm/  interrogate/  reflect/
-        ├── principle-*/            # 19 principles
+        ├── principle-*/            # 24 principles
         └── ...
 ```

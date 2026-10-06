@@ -1,7 +1,7 @@
 # Pstack for Kiro 
 
 The full [pstack](https://github.com/cursor/plugins/tree/main/pstack) prompt
-engineering stack, ported to run on Kiro CLI. All 54 skills, 23 playbooks, and
+engineering stack, ported to run on Kiro CLI. All 51 skills, 23 playbooks, and
 the `poteto-agent` subagent role, wired for Kiro's skill discovery, subagent
 tool, and steering files.
 
@@ -34,16 +34,14 @@ subagents, and writes verified work. The skills it routes to include:
 | `/setup-pstack` | Picks which model each role uses. |
 | `/automate-me` | Drafts a personal working-style skill. |
 | `/figure-it-out` | Designs a bespoke playbook for anything. |
-| `/grill-me`, `/grilling` | Stress-tests a plan or design. |
 | `/benchmark-checklist` | Vets a perf measurement before acting. |
 | `/create-verification-skill` | Generates a skill that drives the app like a user. |
 | `/maintain-verification-skill` | Keeps a verification skill honest. |
 | `/make-bot-ui` | Builds a dashboard with webhook-driven bots. |
 | `/poteto-help` | Guides picking the right skill or playbook. |
-| `/using-superpowers` | Ensures skills are invoked before acting. |
 | `/typescript-best-practices` | TypeScript rules for .ts/.tsx files. |
 
-Plus 19 principle skills (`principle-laziness-protocol`,
+Plus 24 principle skills (`principle-laziness-protocol`,
 `principle-fix-root-causes`, `principle-model-the-domain`, etc.) that ground
 every decision.
 
@@ -77,7 +75,7 @@ chmod +x install.sh
 ./install.sh global
 ```
 
-Copies all 54 skills to `~/.kiro/skills/` and the agent config to
+Copies all 51 skills to `~/.kiro/skills/` and the agent config to
 `~/.kiro/agents/`, validates, and runs the harness. The agent config uses a
 `~/...` path, so no path rewriting is needed.
 
@@ -104,7 +102,7 @@ The agent config uses `~/...` paths, so a plain copy works for a global install.
 ## Use
 
 pstack skills work as slash commands in `kiro-cli chat`. After a global install,
-every new chat session sees all 54 skills because the default agent inherits
+every new chat session sees all 51 skills because the default agent inherits
 `skill://~/.kiro/skills/*/SKILL.md`. Tab completion works (`/pote<Tab>` completes
 to `/poteto-mode`). No agent switch is needed. See `docs/PORTING-SUMMARY.md` for
 the chat verification record.
@@ -135,7 +133,6 @@ works through them. Principles are applied at each decision point.
 /arena <alternatives>     # N candidates, pick the best
 /swarm <coverage target>  # fan-out for coverage or exploration
 /interrogate              # multi-model adversarial review
-/grill-me <plan>          # stress-test a plan
 ```
 
 ### Build and clean
@@ -186,7 +183,7 @@ Pstack-kiro-harness/
         ├── interrogate/               # adversarial review
         ├── reflect/                   # transcript learnings
         ├── principle-*/               # 19 grounding principles
-        └── ... (54 skills total)
+        └── ... (51 skills total)
 ```
 
 ## Scope
