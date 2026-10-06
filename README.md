@@ -4,6 +4,8 @@
 > Use `main` for the base port. Use this branch when your Kiro project has
 > specs, steering, hooks, or MCP servers and you want pstack to read them.
 
+ภาษาไทย: [README.th.md](README.th.md)
+
 ## How this branch connects pstack to Kiro features
 
 Kiro CLI has built-in features that Cursor does not have. The `main` branch
