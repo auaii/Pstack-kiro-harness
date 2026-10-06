@@ -5,6 +5,8 @@ engineering stack, ported to run on Kiro CLI. All 51 skills, 23 playbooks, and
 the `poteto-agent` subagent role, wired for Kiro's skill discovery, subagent
 tool, and steering files.
 
+ภาษาไทย: [README.th.md](README.th.md)
+
 ## What is pstack
 
 pstack is a structured agent operating system. `/poteto-mode` is the router. You
