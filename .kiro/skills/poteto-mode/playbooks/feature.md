@@ -2,6 +2,8 @@
 
 **You own the design. Plan, review, verify.** Delegate implementation. Stay in the lead.
 
+**Spec first.** If `.kiro/specs/` contains a spec for this work, read its `requirements.md`, `design.md`, and `tasks.md` before step 1. Treat the acceptance criteria as the verification predicate for step 5. When no spec exists, infer from the prompt as before.
+
 1. `how` over the affected subsystem.
 2. `architect` for parallel design exploration.
 3. Write the throughput checkpoint as four todo items. A dimension that genuinely does not apply (single file, no fan-out) keeps its item with `n/a: <reason>` rather than being dropped:
