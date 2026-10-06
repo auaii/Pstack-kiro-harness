@@ -61,7 +61,7 @@ Capture this as seed context (file paths, symbols, commits, PR numbers, linked t
 
 ### Discovery
 
-Before spawning investigators, list the available MCPs from the Cursor environment. Use the available-tools map when present. Otherwise inspect the `mcps/` directory Cursor exposes for enabled MCP servers.
+Before spawning investigators, list the available MCP servers. On Kiro, these are declared in the agent config `mcpServers` section. Run `/tools` to see which MCP tools are loaded. To add a new source (Slack, Jira, GitHub), add it to the agent's `mcpServers` in `.kiro/agents/*.json` or `~/.kiro/agents/*.json`.
 
 Map each available MCP to one evidence category:
 
@@ -82,7 +82,7 @@ Launch all matching investigators in a single message so they run concurrently. 
 Subagent config (each):
 - `subagent_type`: `generalPurpose`
 - `model`: the `why investigators` line, default `grok-4.7-xhigh-fast`
-- `readonly`: `false` (agent mode). **Do not use readonly/Ask mode.** It strips MCP access, which disables MCP-backed investigators entirely. Investigators still shouldn't write anything.
+- `readonly`: `false` (agent mode). **Do not strip tool access.** A read-only subagent loses MCP access, which disables MCP-backed investigators entirely. Investigators still shouldn't write anything.
 
 Each investigator gets:
 1. The base prompt from `references/investigator-prompt.md`
