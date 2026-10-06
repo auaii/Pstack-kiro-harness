@@ -8,6 +8,8 @@ disable-model-invocation: true
 ---
 # How to make a bot UI
 
+> Kiro note. The Grok Bot webhook (`api2.cursor.sh`) is a Cursor Background Agent feature with no Kiro equivalent. The UI-building and server parts of this skill port fine; the webhook target needs a Cursor account, or substitute your own bot endpoint. See `references/kiro-compat.md`.
+
 Build a page the user clicks. A server on this computer POSTs JSON to a webhook routine. The bot wakes with that JSON. Keep the sender key on the server. Do not put the sender key in the browser, in chat, or in this skill.
 
 ## Create the webhook routine
