@@ -1,0 +1,14 @@
+{
+  "version": "v1",
+  "hooks": [
+    {
+      "name": "Decision Trail",
+      "trigger": "Stop",
+      "description": "Append one decision-log row per agent turn to decisions.tsv, following the show-me-your-work format.",
+      "action": {
+        "type": "agent",
+        "prompt": "You are appending a decision-trail row for the turn that just finished, in the show-me-your-work TSV format.\n\nSCOPE CHECK first: if the turn made no real decision, fork, unit completion, pivot, revert, or blocker, STOP and write nothing. Skip trivial and self-evident turns.\n\nIF the turn had a loggable decision, append to decisions.tsv in the work dir (create it with the header row `ts\\tphase\\tdecision\\twhy\\tevidence\\tresult` if absent):\n\n- ts: current local time in ISO8601.\n- phase: the phase or workstream.\n- decision: what was chosen or done, one line.\n- why: the reason in plain words, no jargon tag.\n- evidence: a pointer that resolves (commit SHA, PR number, file:line, artifact path), never prose.\n- result: the outcome (tests green, reverted, open, INCONCLUSIVE).\n\nRULES: append-only, never edit or delete history. Keep every cell single-line. Prefix any cell starting with =, +, -, or @ with a single quote. Never write secrets; refer to them by key name. Only modify decisions.tsv."
+      }
+    }
+  ]
+}

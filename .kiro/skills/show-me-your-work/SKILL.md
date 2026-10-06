@@ -73,6 +73,10 @@ Before handing back, spawn a subagent on a different model family from the one t
 
 Every reply for a run that produced a trail ends with an "Attention" section. Lead with the reviewer's model on its own line (`reviewed by <model>`), then list each flag pointing to specific rows or moments. "No flags" is a valid value. The model name is not.
 
+## Automatic trail via Kiro hook (optional)
+
+On Kiro, install `hooks/show-me-your-work.json` to write the trail automatically on every `Stop` trigger. The hook appends one row per turn end without the agent needing to remember. Install it by copying `hooks/show-me-your-work.json` into your agent config `hooks` section, or into `.kiro/hooks/`. The manual `scripts/log.sh` still works alongside it for mid-turn entries.
+
 ## Reviewing the trail
 
 Read top to bottom, follow the evidence pointers, spot-check. GitHub renders a committed TSV as a table. `column -s$'\t' -t decisions.tsv` renders it in a terminal.
