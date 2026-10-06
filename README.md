@@ -101,6 +101,12 @@ Installs into `./.kiro/skills/` and `./.kiro/agents/`. Workspace overrides globa
 
 ## Use
 
+pstack skills work as slash commands in `kiro-cli chat`. After a global install,
+every new chat session sees all 54 skills because the default agent inherits
+`skill://~/.kiro/skills/*/SKILL.md`. Tab completion works (`/pote<Tab>` completes
+to `/poteto-mode`). No agent switch is needed. See `docs/PORTING-SUMMARY.md` for
+the chat verification record.
+
 ### Start the mode
 
 ```
