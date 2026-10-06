@@ -12,6 +12,8 @@ Each spawn below names a role line in the `pstack-models.mdc` rule and a default
 
 ## Step 1. Assess Complexity
 
+Read `.kiro/steering/*.md` first if present. They carry project conventions (stack, structure, gotchas) that ground the explanation in this codebase rather than generic advice.
+
 If the scope is ambiguous, state your interpretation and explore. The user can redirect.
 
 - **Simple** (a single module, a small utility, a narrow question such as "how does function X work"): no explorers. One explainer explores and explains in a single pass. Go to Step 2b.
