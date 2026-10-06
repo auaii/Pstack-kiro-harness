@@ -41,8 +41,9 @@ Ten changes, each driven by a measured difference between the two harnesses.
 These do not exist in upstream pstack. They are the port's compatibility layer.
 
 - `.kiro/agents/poteto-agent.json`. The agent config that makes the subagent role
-  resolve. It loads every skill through `skill://` resources and uses the
-  `__PSTACK_SKILL_PATH__` placeholder that the installer fills with the real path.
+  resolve. It loads every skill through `skill://` resources and uses a
+  `file://~/.kiro/skills/poteto-mode/SKILL.md` tilde path, so a plain copy to
+  `~/.kiro/` works without any path rewriting.
 - `.kiro/skills/poteto-mode/references/kiro-compat.md`. An eleven-row translation
   table from Cursor concepts to Kiro equivalents. It is the source of truth any
   playbook consults when it names a Cursor mechanism.

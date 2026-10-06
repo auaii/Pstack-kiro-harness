@@ -1,7 +1,7 @@
 {
   "name": "poteto-agent",
   "description": "Poteto-style code and prose delegate. Spawned as a subagent role from poteto-mode playbooks. Loads all pstack skills.",
-  "prompt": "file://__PSTACK_SKILL_PATH__",
+  "prompt": "file://~/.kiro/skills/poteto-mode/SKILL.md",
   "tools": ["read", "write", "shell", "grep", "glob", "code"],
   "allowedTools": ["read", "grep", "glob", "code"],
   "resources": [

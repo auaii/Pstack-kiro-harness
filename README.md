@@ -77,9 +77,9 @@ chmod +x install.sh
 ./install.sh global
 ```
 
-Copies all 54 skills to `~/.kiro/skills/`, writes
-`~/.kiro/agents/poteto-agent.json` with the real skill path, validates, and runs
-the harness.
+Copies all 54 skills to `~/.kiro/skills/` and the agent config to
+`~/.kiro/agents/`, validates, and runs the harness. The agent config uses a
+`~/...` path, so no path rewriting is needed.
 
 ### Workspace (one project)
 
@@ -90,14 +90,16 @@ From the project root:
 ```
 
 Installs into `./.kiro/skills/` and `./.kiro/agents/`. Workspace overrides global.
+Note the agent `prompt` still points at the global `~/.kiro/skills/` path, so a
+workspace install also needs the skills present globally, or edit that one path.
 
 ### Manual
 
+The agent config uses `~/...` paths, so a plain copy works for a global install.
+
 1. Copy everything under `.kiro/skills/` to `~/.kiro/skills/`.
 2. Copy `.kiro/agents/poteto-agent.json` to `~/.kiro/agents/`.
-3. In that copy, replace `__PSTACK_SKILL_PATH__` with the absolute path to the
-   installed `poteto-mode/SKILL.md`.
-4. Run `kiro-cli agent validate --path ~/.kiro/agents/poteto-agent.json`.
+3. Run `kiro-cli agent validate --path ~/.kiro/agents/poteto-agent.json`.
 
 ## Use
 
