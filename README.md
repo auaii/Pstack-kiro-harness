@@ -1,4 +1,4 @@
-# Pstack for Kiro CLI
+# Pstack for Kiro 
 
 The full [pstack](https://github.com/cursor/plugins/tree/main/pstack) prompt
 engineering stack, ported to run on Kiro CLI. All 54 skills, 23 playbooks, and
