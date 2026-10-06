@@ -1,5 +1,41 @@
 # Pstack for Kiro 
 
+> **Branch `kiro-core-feature-integration`.**
+> This branch extends the main-branch port with deep integration into five
+> Kiro-native features that Cursor never had. If you want the base port only,
+> use the `main` branch. This branch is for projects that want pstack to use
+> Kiro, not just run on it.
+
+## What this branch adds over main
+
+The `main` branch makes pstack work on Kiro (skill routing, subagent spawn,
+model config). This branch makes pstack aware of Kiro's own features.
+
+| Kiro feature | What pstack does with it | Main branch |
+|---|---|---|
+| **Specs** (`.kiro/specs/`) | Feature and Bug fix playbooks read `requirements.md`, `design.md`, `tasks.md` before planning. Acceptance criteria become the verification target. | Ignores specs. |
+| **Steering** (`.kiro/steering/*.md`) | `/how` and Investigation read project conventions first. Explanations reflect your stack and gotchas, not generic advice. | Steering loads into context but skills don't name it. |
+| **Hooks** (`.kiro/hooks/`) | Ships `hooks/show-me-your-work.json`, a Stop hook that writes the decision trail automatically every turn. | Manual trail only. |
+| **MCP servers** (`mcpServers`) | `/why` reads MCP servers from Kiro agent config and queries each evidence source (Slack, Jira, GitHub). | Cursor MCP-discovery prose that does not apply. |
+| **Model defaults** | Every runner skill defaults to `auto`. Works out of the box. No rejected-slug errors. | Some skills still carried Cursor slugs that Kiro rejects. |
+
+Full detail, per-file change list, and verification record are in
+[`docs/KIRO-INTEGRATION-REPORT.md`](docs/KIRO-INTEGRATION-REPORT.md).
+Usage guide for all five features is in
+[`docs/guide/11-kiro-integration.md`](docs/guide/11-kiro-integration.md).
+
+## Why use this branch instead of main
+
+Use **main** if you want pstack on Kiro as a drop-in replacement for the Cursor
+plugin with minimal changes.
+
+Use **this branch** if your Kiro projects use specs, steering, hooks, or MCP
+servers and you want pstack to read and use them instead of ignoring them. The
+cost is a larger diff from upstream pstack; the gain is that the agent works
+with your project's Kiro setup rather than around it.
+
+---
+
 The full [pstack](https://github.com/cursor/plugins/tree/main/pstack) prompt
 engineering stack, ported to run on Kiro CLI. All 51 skills, 23 playbooks, and
 the `poteto-agent` subagent role, wired for Kiro's skill discovery, subagent
