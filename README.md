@@ -1,38 +1,126 @@
 # Pstack for Kiro 
 
 > **Branch `kiro-core-feature-integration`.**
-> This branch extends the main-branch port with deep integration into five
-> Kiro-native features that Cursor never had. If you want the base port only,
-> use the `main` branch. This branch is for projects that want pstack to use
-> Kiro, not just run on it.
+> Use `main` for the base port. Use this branch when your Kiro project has
+> specs, steering, hooks, or MCP servers and you want pstack to read them.
 
-## What this branch adds over main
+## How this branch connects pstack to Kiro features
 
-The `main` branch makes pstack work on Kiro (skill routing, subagent spawn,
-model config). This branch makes pstack aware of Kiro's own features.
+Kiro CLI has built-in features that Cursor does not have. The `main` branch
+ignores them. This branch wires pstack into each one. Here is what each Kiro
+feature does, and what pstack does with it.
 
-| Kiro feature | What pstack does with it | Main branch |
+### 1. Kiro Specs
+
+**What Kiro gives you.** You write structured requirements in
+`.kiro/specs/<name>/requirements.md` with acceptance criteria like "WHEN the user
+submits the form, THE controller SHALL trim and escape all fields." Kiro can
+generate these from a prompt. They live in your repo.
+
+**What main-branch pstack does.** Ignores them. The Feature playbook infers
+requirements from your chat prompt.
+
+**What this branch does.** The Feature and Bug fix playbooks read the spec first.
+Each acceptance criterion becomes the done-check. The agent verifies its build
+against those criteria, not against what it inferred from your words.
+
+**Example flow.**
+```
+You have: .kiro/specs/student-search-filter/requirements.md (6 requirements, 13 acceptance criteria)
+You type:  /poteto-mode implement the student-search-filter spec
+Agent does: reads spec → architect → builds → verifies each criterion → done
+```
+
+### 2. Kiro Steering
+
+**What Kiro gives you.** Markdown files in `.kiro/steering/` that describe your
+project's conventions. For example `tech.md` says "use callback-style DB access,
+not async/await" and "use parameterized queries, not string interpolation."
+Steering files load into context every turn automatically.
+
+**What main-branch pstack does.** Steering enters context but no skill mentions
+it. The agent might follow it, might not.
+
+**What this branch does.** The `/how` skill and Investigation playbook explicitly
+read steering first. The agent names the conventions and follows them.
+
+**Example flow.**
+```
+You have: .kiro/steering/tech.md (says: callback-style DB, express-validator, no async/await)
+You type:  /how does the supplier model layer work
+Agent does: reads tech.md → explains using callback style, names the per-request connection pattern
+Without this branch: might explain with async/await patterns from generic Express docs
+```
+
+### 3. Kiro Hooks
+
+**What Kiro gives you.** JSON files in `.kiro/hooks/` that run an action at
+specific moments. A `Stop` hook fires after every agent turn. You already have
+one (`session-report.json`) that writes a report after each turn.
+
+**What main-branch pstack does.** Nothing. The `show-me-your-work` skill writes
+a decision trail by hand, and the agent has to remember to do it.
+
+**What this branch does.** Ships `hooks/show-me-your-work.json`, a Stop hook that
+writes the decision trail automatically. Install it once, the trail builds itself.
+
+**Example flow.**
+```
+You install: cp hooks/show-me-your-work.json ~/.kiro/hooks/
+You type:    /poteto-mode migrate the auth module (going to bed, trust it when I'm back)
+Agent does:  works through the night, every turn appends a row to decisions.tsv automatically
+You wake up: open decisions.tsv, see every decision, its evidence, and its result
+Without this branch: agent writes the trail only when it remembers to
+```
+
+### 4. Kiro MCP Servers
+
+**What Kiro gives you.** You declare external tool servers (Slack, Jira, GitHub)
+in your agent config `mcpServers`. The agent can query them.
+
+**What main-branch pstack does.** The `/why` skill says "discover MCPs from the
+Cursor environment" which means nothing on Kiro.
+
+**What this branch does.** `/why` reads MCP servers from the Kiro agent config
+and queries each source to find evidence.
+
+**Example flow.**
+```
+You have: mcpServers with GitHub configured in your agent
+You type:  /why was the per-request DB connection chosen
+Agent does: queries git history via GitHub MCP, finds the commit, cites the PR discussion
+Without this branch: the prose says "inspect the mcps/ directory Cursor exposes", agent is confused
+```
+
+### 5. Model defaults that work out of the box
+
+**What Kiro gives you.** Auto model selection. You pick a model or let Kiro
+choose.
+
+**What main-branch pstack does.** Some runner skills still carry Cursor model
+names like `grok-4.7-xhigh-fast`. Kiro does not know these names. If you run
+`/how` or `/arena` before running `/setup-pstack`, the subagent spawn fails with
+a model-rejected error.
+
+**What this branch does.** Every skill defaults to `auto` (use the parent chat
+model). Works immediately after install. `/setup-pstack` lets you pin specific
+models later if you want.
+
+## Quick comparison
+
+| | `main` branch | `kiro-core-feature-integration` branch |
 |---|---|---|
-| **Specs** (`.kiro/specs/`) | Feature and Bug fix playbooks read `requirements.md`, `design.md`, `tasks.md` before planning. Acceptance criteria become the verification target. | Ignores specs. |
-| **Steering** (`.kiro/steering/*.md`) | `/how` and Investigation read project conventions first. Explanations reflect your stack and gotchas, not generic advice. | Steering loads into context but skills don't name it. |
-| **Hooks** (`.kiro/hooks/`) | Ships `hooks/show-me-your-work.json`, a Stop hook that writes the decision trail automatically every turn. | Manual trail only. |
-| **MCP servers** (`mcpServers`) | `/why` reads MCP servers from Kiro agent config and queries each evidence source (Slack, Jira, GitHub). | Cursor MCP-discovery prose that does not apply. |
-| **Model defaults** | Every runner skill defaults to `auto`. Works out of the box. No rejected-slug errors. | Some skills still carried Cursor slugs that Kiro rejects. |
+| Specs | ignored | read before planning, acceptance criteria = done-check |
+| Steering | enters context silently | skills name it and follow conventions |
+| Hooks | manual decision trail | automatic Stop-hook trail |
+| MCP | Cursor discovery prose | reads Kiro agent config |
+| Model defaults | Cursor slugs that may reject | `auto` everywhere, works immediately |
+| Cursor-ism cleanup | core loop only | deep, across all 51 skills |
 
-Full detail, per-file change list, and verification record are in
-[`docs/KIRO-INTEGRATION-REPORT.md`](docs/KIRO-INTEGRATION-REPORT.md).
-Usage guide for all five features is in
+Full per-file change list and verification record are in
+[`docs/KIRO-INTEGRATION-REPORT.md`](docs/KIRO-INTEGRATION-REPORT.md). The usage
+guide for all five features is in
 [`docs/guide/11-kiro-integration.md`](docs/guide/11-kiro-integration.md).
-
-## Why use this branch instead of main
-
-Use **main** if you want pstack on Kiro as a drop-in replacement for the Cursor
-plugin with minimal changes.
-
-Use **this branch** if your Kiro projects use specs, steering, hooks, or MCP
-servers and you want pstack to read and use them instead of ignoring them. The
-cost is a larger diff from upstream pstack; the gain is that the agent works
-with your project's Kiro setup rather than around it.
 
 ---
 
